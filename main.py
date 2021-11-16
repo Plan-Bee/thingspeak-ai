@@ -1,29 +1,16 @@
-import pymysql
-
-import sql_connection_handler as db_handler
-
-
-def fetch_thingspeak_data(id: int) -> [tuple]:
-    conn = db_handler.get_db_connection()
-    cur = conn.cursor()
-
-    select_temperature_data = """
-    SELECT 
-        broodroom_temperature,
-        outdoor_temperature,
-        timestamp 
-    FROM 
-        honeypi_data 
-    WHERE 
-        hive_id = %s
-    """
-
-    cur.execute(select_temperature_data, id)
-    temperature_data = cur.fetchall()
-
-    return temperature_data
+import data as plan_bee_data
+from datetime import datetime
 
 
 if __name__ == '__main__':
-    for broodroom_temperature, outdoor_temperature, timestamp in fetch_thingspeak_data(1):
-        print(timestamp, broodroom_temperature, outdoor_temperature)
+    temperature_data = plan_bee_data.fetch_temperature_data(1)
+
+    learning_data, test_data = plan_bee_data.split_data_by_timestamp(
+        temperature_data=temperature_data,
+        split_timestamp=split_timestamp
+    )
+
+    scaled_learning_data = plan_bee_data.preprocess_temperature_data(learning_data)
+    scaled_test_data = plan_bee_data.preprocess_temperature_data(test_data)
+
+    learning_values, learning_results = plan_bee_data.get_training_data(scaled_learning_data, prediction_days)
