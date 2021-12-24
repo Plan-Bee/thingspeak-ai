@@ -1,20 +1,21 @@
 import logging
-import os
-
 import pymysql as pymysql
+from dotenv import dotenv_values
 
 
 def get_db_connection() -> pymysql.Connection:
+    conn = None
     try:
+        config = dotenv_values(".env")
+
         conn = pymysql.connect(
-            user=os.environ['vServer_SQL_User'],
-            password=os.environ['vServer_SQL_Password'],
-            host='localhost',
-            port=3306,
-            database=os.environ['DHBW_Bot_Database']
+            user=config['DB_USER'],
+            password=config['DB_PASSWORD'],
+            host=config['DB_HOST'],
+            port=int(config['DB_PORT']),
+            database=config['DB_NAME']
         )
-    except pymysql.Error as e:
+    except Exception as e:
         logging.error("SQL Connection Error:%s", e)
-        conn = None
     finally:
         return conn

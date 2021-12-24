@@ -1,6 +1,8 @@
 import data as plan_bee_data
 from datetime import datetime
 
+prediction_days = 13
+split_timestamp = datetime.strptime('2021-10-01', '%Y-%m-%d')
 
 if __name__ == '__main__':
     temperature_data = plan_bee_data.fetch_temperature_data(1)
