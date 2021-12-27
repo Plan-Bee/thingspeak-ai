@@ -2,3 +2,5 @@ pymysql
 python-dotenv
 scikit-learn
 tensorflow
+pandas
+seaborn
