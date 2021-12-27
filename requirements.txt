@@ -1,3 +1,4 @@
 pymysql
 python-dotenv
-sklearn
+scikit-learn
+tensorflow

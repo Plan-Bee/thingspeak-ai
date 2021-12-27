@@ -1,21 +1,22 @@
 import logging
-import pymysql as pymysql
-from dotenv import dotenv_values
+import pymysql
+import os
+from dotenv import load_dotenv
 
 
 def get_db_connection() -> pymysql.Connection:
-    conn = None
-    try:
-        config = dotenv_values(".env")
+	conn = None
+	try:
+		load_dotenv(".env")
 
-        conn = pymysql.connect(
-            user=config['DB_USER'],
-            password=config['DB_PASSWORD'],
-            host=config['DB_HOST'],
-            port=int(config['DB_PORT']),
-            database=config['DB_NAME']
-        )
-    except Exception as e:
-        logging.error("SQL Connection Error:%s", e)
-    finally:
-        return conn
+		conn = pymysql.connect(
+			user=os.environ.get('DB_USER'),
+			password=os.environ.get('DB_PASSWORD'),
+			host=os.environ.get('DB_HOST'),
+			port=int(os.environ.get('DB_PORT')),
+			database=os.environ.get('DB_NAME')
+		)
+	except Exception as e:
+		logging.error("SQL Connection Error:%s", e)
+
+	return conn
