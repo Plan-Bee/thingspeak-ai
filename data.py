@@ -5,9 +5,27 @@ import sql_connection_handler as db_handler
 
 KELVIN_OFFSET = 273.15
 
-# Initialize scaler for normalizing data
-scaler = MinMaxScaler(feature_range=(0, 1))
+def plot_loss(history):
+    plt.plot(history.history['loss'], label='loss')
+    plt.plot(history.history['val_loss'], label='val_loss')
+    plt.ylim(0.5, 1.5)
+    plt.xlabel('Epoch')
+    plt.ylabel('Error [broodroom_temperature]')
+    plt.legend()
+    plt.grid(True)
 
+
+def plot_temperature(x, y, train_features, train_labels):
+    plt.scatter(train_features['outdoor_temperature'], train_labels, label='Data')
+    plt.plot(x, y, color='k', label='Predictions')
+    plt.xlabel('Outdoor')
+    plt.ylabel('Indoor')
+    plt.legend()
+
+def wir_schauen_einfach_mal(temperature_data: [(int, int, datetime)]):
+    dataset = pd.DataFrame(temperature_data)
+
+    dataset.columns = ['broodroom_temperature', 'outdoor_temperature', 'time']
 
 def split_data_by_timestamp(temperature_data: [], split_timestamp: datetime) -> ([], []):
     learning_data = []
