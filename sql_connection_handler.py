@@ -5,6 +5,10 @@ from dotenv import load_dotenv
 
 
 def get_db_connection() -> pymysql.Connection:
+	"""
+	Opens a pymysql connection and returns the connection object
+	:return: The pymysql.Connection
+	"""
 	conn = None
 	try:
 		load_dotenv(".env")
